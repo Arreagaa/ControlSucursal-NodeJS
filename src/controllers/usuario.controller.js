@@ -36,7 +36,7 @@ function RegistrarAdmin(req, res){
     usuariosModel.email = 'Admin@gmail.com';
     usuariosModel.rol = 'ROL_ADMINISTRADOR';
 
-    Usuarios.find({ nombre: 'Admin', email: 'Admin@gmail.com'}, (err, usuarioEncontrato) => {
+    Usuarios.find({ nombre: 'superAdmin', email: 'Admin@gmail.com'}, (err, usuarioEncontrato) => {
         if (usuarioEncontrato.length == 0) {
             bcrypt.hash("123456",null, null, (err, passswordEncypt) => { 
                 usuariosModel.password = passswordEncypt
