@@ -88,6 +88,35 @@ function registrarEmpresa(req, res){
         
 }
 
+function registrarUsuario(req, res){
+    var parametros = req.body;
+    var usuariosModel = new Usuarios();
+  
+    if(parametros.nombre, parametros.email, parametros.password){
+        usuariosModel.nombre = parametros.nombre;
+        usuariosModel.email =  parametros.email;
+        usuariosModel.password = parametros.password;
+        usuariosModel.rol = 'ROL_USUARIO';
+    }
+            Usuarios.find({nombre: parametros.nombre, email: parametros.email, password: parametros.password, rol: parametros.rol}
+                ,(err, usuarioGuardado)=>{
+                if(usuarioGuardado.length == 0){
+                    bcrypt.hash(parametros.password, null,null, (err, passwordEncriptada)=>{
+                        usuariosModel.password = passwordEncriptada;
+                        usuariosModel.save((err, usGuardado) => {
+                            if(err) return res.status(500).send({mensaje: 'No se realizo la accion'});
+                            if(!usGuardado) return res.status(404).send({mensaje: 'No se agrego el usuario'});
+  
+                            return res.status(201).send({usuarios: usGuardado});
+                         })
+                    })
+                }else{
+                    return res.status(500).send({ mensaje: 'Error en la peticion' });
+                }
+            })
+        
+}
+
 function editarEmpresa(req, res){
     var idUser = req.params.idUsuario;
     var paramentros = req.body;
@@ -121,5 +150,6 @@ module.exports = {
     registrarEmpresa,
     editarEmpresa,
     eliminarEmpresa,
-    ObtenerEmpresas
+    ObtenerEmpresas,
+    registrarUsuario
 }
