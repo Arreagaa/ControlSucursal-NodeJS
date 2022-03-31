@@ -2,6 +2,18 @@ const Usuarios = require('../models/usuario.model');
 const bcrypt = require('bcrypt-nodejs');
 const jwt = require('../services/jwt');
 
+function ObtenerEmpresas (req, res) {
+    Usuarios.find((err, empresasObtenidas) => {
+        if (err) return res.send({ mensaje: "Error: " + err })
+
+        for (let i = 0; i < empresasObtenidas.length; i++) {
+            console.log(empresasObtenidas[i].nombre)
+        }
+
+        return res.send({ productos: empresasObtenidas })
+    })
+}
+
 //LOGIN
 function login(req,res){
     var paramentros = req.body;
@@ -50,7 +62,68 @@ function RegistrarAdmin(req, res){
     })
 }
 
+function registrarEmpresa(req, res){
+    var parametros = req.body;
+    var usuariosModel = new Usuarios();
+  
+    if(parametros.nombre, parametros.email, parametros.password){
+        usuariosModel.nombre = parametros.nombre;
+        usuariosModel.email =  parametros.email;
+        usuariosModel.password = parametros.password;
+        usuariosModel.tipo = parametros.tipo;
+        usuariosModel.rol = 'ROL_EMPRESA';
+    }
+            Usuarios.find({nombre: parametros.nombre, email: parametros.email, password: parametros.password, tipo: parametros.tipo ,rol: parametros.rol}
+                ,(err, empresaGuardada)=>{
+                if(empresaGuardada.length == 0){
+                    bcrypt.hash(parametros.password, null,null, (err, passwordEncriptada)=>{
+                        usuariosModel.password = passwordEncriptada;
+                        usuariosModel.save((err, empGuardada) => {
+                            if(err) return res.status(500).send({mensaje: 'No se realizo la accion'});
+                            if(!empGuardada) return res.status(404).send({mensaje: 'No se agrego la empresa'});
+  
+                            return res.status(201).send({usuarios: empGuardada});
+                         })
+                    })
+                }else{
+                    return res.status(500).send({ mensaje: 'Error en la peticion' });
+                }
+            })
+        
+}
+
+function editarEmpresa(req, res){
+    var idUser = req.params.idUsuario;
+    var paramentros = req.body;
+
+        Usuarios.findByIdAndUpdate({_id: idUser, email: paramentros.email, password: paramentros.password, tipo: paramentros.tipo, rol: paramentros.rol}, paramentros,{new:true},
+            (err, empresaEditada)=>{
+                if(err) return res.status(500).send({mensaje: 'Error en la peticion'});
+                if(!empresaEditada) return res.status(400).send({mensaje: 'No se puede ediar la empresa'});
+                
+                return res.status(200).send({usuarios: empresaEditada});
+            })
+}
+
+
+function eliminarEmpresa(req, res){
+    var idUser = req.params.idUsuario;
+    var paramentros = req.body;
+
+        Usuarios.findByIdAndDelete({_id: idUser},(err, empresaEliminada)=>{
+                
+            if(err) return res.status(500).send({mensaje: 'Error en la peticion'});
+                if(!empresaEliminada) return res.status(400).send({mensaje: 'No es puede eliminar la empresa'});
+                
+                return res.status(200).send({usuarios: empresaEliminada});
+            })
+}
+
 module.exports = {
     login,
-    RegistrarAdmin
+    RegistrarAdmin,
+    registrarEmpresa,
+    editarEmpresa,
+    eliminarEmpresa,
+    ObtenerEmpresas
 }
