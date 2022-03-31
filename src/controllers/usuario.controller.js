@@ -6,11 +6,7 @@ function ObtenerEmpresas (req, res) {
     Usuarios.find((err, empresasObtenidas) => {
         if (err) return res.send({ mensaje: "Error: " + err })
 
-        for (let i = 0; i < empresasObtenidas.length; i++) {
-            console.log(empresasObtenidas[i].nombre)
-        }
-
-        return res.send({ productos: empresasObtenidas })
+        return res.send({ usuarios: empresasObtenidas })
     })
 }
 
