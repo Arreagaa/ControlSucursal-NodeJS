@@ -62,14 +62,13 @@ function registrarEmpresa(req, res){
     var parametros = req.body;
     var usuariosModel = new Usuarios();
   
-    if(parametros.nombre, parametros.email, parametros.password){
+    if(parametros.nombre, parametros.email, parametros.tipo){
         usuariosModel.nombre = parametros.nombre;
         usuariosModel.email =  parametros.email;
-        usuariosModel.password = parametros.password;
+        //usuariosModel.password = parametros.password;
         usuariosModel.tipo = parametros.tipo;
         usuariosModel.rol = 'ROL_EMPRESA';
-    }
-            Usuarios.find({nombre: parametros.nombre, email: parametros.email, password: parametros.password, tipo: parametros.tipo ,rol: parametros.rol}
+            Usuarios.find({nombre: parametros.nombre/*, email: parametros.email, password: parametros.password, tipo: parametros.tipo ,rol: parametros.rol*/}
                 ,(err, empresaGuardada)=>{
                 if(empresaGuardada.length == 0){
                     bcrypt.hash(parametros.password, null,null, (err, passwordEncriptada)=>{
@@ -85,7 +84,9 @@ function registrarEmpresa(req, res){
                     return res.status(500).send({ mensaje: 'Error en la peticion' });
                 }
             })
-        
+        }else{
+            return res.status(500).send({ mensaje: 'Error en la peticion agregar' });
+        }
 }
 
 function registrarUsuario(req, res){
