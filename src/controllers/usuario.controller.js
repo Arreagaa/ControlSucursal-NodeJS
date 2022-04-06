@@ -21,7 +21,7 @@ function login(req,res){
                 if(verificacionPassword){
                     if(paramentros.obtenerToken === 'true'){
                         return res.status(200).send({
-                            toke: jwt.crearToken(usuarioGuardado)
+                            token: jwt.crearToken(usuarioGuardado)
                         })
                     }else{
                         usuarioGuardado.password = undefined;
