@@ -5,6 +5,8 @@ var app = express();
 
 // IMPORTACIONES RUTAS
 const UsuarioRutas = require('./src/routes/usuario.routes');
+const SucursalesRutas = require('./src/routes/sucursales.routes');
+const ProductosRutas = require('./src/routes/producto.routes');
 //const EmpresaRutas = require('./src/routes/empresa.routes');
 
 // MIDDLEWARES -> INTERMEDIARIOS
@@ -15,7 +17,7 @@ app.use(express.json());
 app.use(cors());
 
 // CARGA DE RUTAS localhost:3000/api/obtenerProductos
-app.use('/api', UsuarioRutas, /*EmpresaRutas*/);
+app.use('/api', UsuarioRutas, /*EmpresaRutas*/SucursalesRutas, ProductosRutas);
 
 
 module.exports = app;
