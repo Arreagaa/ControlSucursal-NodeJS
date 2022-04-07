@@ -156,6 +156,17 @@ function eliminarEmpresa(req, res){
             })
 }
 
+function ObtenerEmpresaId(req, res){
+    var idEmpresa = req.params.idEmpresa
+
+    Usuarios.findById(idEmpresa,(err,empresaEncontrada)=>{
+        if (err) return res.status(500).send({ mensaje: 'Error en la peticion' });
+        if (!empresaEncontrada) return res.status(404).send( { mensaje: 'Error al obtener la Empresa' });
+
+        return res.status(200).send({ usuarios: empresaEncontrada });
+    })
+}
+
 module.exports = {
     login,
     RegistrarAdmin,

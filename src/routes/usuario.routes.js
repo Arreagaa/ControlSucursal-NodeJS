@@ -22,6 +22,5 @@ api.delete('/eliminarEmpresa/:idUsuario', [md_autentificacion.Auth,md_roles.verA
 api.get('/obtenerEmpresas',[md_autentificacion.Auth, md_roles.verAdmin],usuarioController.ObtenerEmpresas);
 
 api.get('/obtenerEmpresaId/:idEmpresa',[md_autentificacion.Auth, md_roles.verAdmin],usuarioController.ObtenerEmpresaId);
-//api.get('/obtenerEmpresaId/:idEmpresa',usuarioController.ObtenerEmpresaId);
 
 module.exports = api;
