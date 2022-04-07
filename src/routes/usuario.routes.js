@@ -15,9 +15,13 @@ api.post('/registrarEmpresa', [md_autentificacion.Auth,md_roles.verAdmin],usuari
 api.post('/registrarUsuario', /*[md_autentificacion.Auth, md_roles.verAdmin],*/usuarioController.registrarUsuario);
 
 api.put('/editarEmpresa/:idUsuario',[md_autentificacion.Auth],usuarioController.editarEmpresa);
+//api.put('/editarEmpresa/:idUsuario',usuarioController.editarEmpresa);
 
 api.delete('/eliminarEmpresa/:idUsuario', [md_autentificacion.Auth,md_roles.verAdmin],usuarioController.eliminarEmpresa);
 
 api.get('/obtenerEmpresas',[md_autentificacion.Auth, md_roles.verAdmin],usuarioController.ObtenerEmpresas);
+
+api.get('/obtenerEmpresaId/:idEmpresa',[md_autentificacion.Auth, md_roles.verAdmin],usuarioController.ObtenerEmpresaId);
+//api.get('/obtenerEmpresaId/:idEmpresa',usuarioController.ObtenerEmpresaId);
 
 module.exports = api;
