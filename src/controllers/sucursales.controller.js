@@ -11,6 +11,17 @@ function ObtenerSucursales (req, res) {
         })
 }
 
+function ObtenerSucursalId(req, res){
+    var idSucursal = req.params.idSucursal
+
+    Sucursales.findById(idSucursal,(err,sucursalEncontrada)=>{
+        if (err) return res.status(500).send({ mensaje: 'Error en la peticion' });
+        if (!sucursalEncontrada) return res.status(404).send( { mensaje: 'Error al obtener la Empresa' });
+
+        return res.status(200).send({ sucursales: sucursalEncontrada });
+    })
+}
+
 function agregarSucursal(req, res) {
     var parametros = req.body;
     var sucursalModel = new Sucursales();
@@ -68,4 +79,5 @@ module.exports = {
     agregarSucursal,
     editarSucursal,
     eliminarSucursal,
+    ObtenerSucursalId
 }
