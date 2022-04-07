@@ -1,5 +1,4 @@
 const Sucursales = require('../models/sucursales.model');
-const bcrypt = require('bcrypt-nodejs');
 const jwt = require('../services/jwt');
 
 function ObtenerSucursales (req, res) {
@@ -7,7 +6,7 @@ function ObtenerSucursales (req, res) {
         Sucursales.find({idEmpresa: req.user.sub},(err, sucursalesObtenidas) =>{
             if(err) return res.send({mensaje:"Error: "+err})
        
-            return res.send({empleados: sucursalesObtenidas})
+            return res.send({sucursales: sucursalesObtenidas})
         })
 }
 
@@ -58,7 +57,7 @@ function editarSucursal(req,res){
         (err,sucursalEditada)=>{
         if(err) return res.status(500).send({mensaje: 'Error en la peticion'});
         if(!sucursalEditada) return res.status(400).send({mensaje: 'No se puede editar la sucursal'});
-        return res.status(200).send({sucursal: sucursalEditada});
+        return res.status(200).send({sucursales: sucursalEditada});
     })
 }
 
@@ -68,8 +67,8 @@ function eliminarSucursal(req,res){
     Empleados.findOneAndDelete({_id:idSuc, idEmpresa:req.user.sub},
         (err,sucursalEliminada)=>{
         if(err) return res.status(500).send({mensaje: 'Error en la peticion'});
-        if(!sucursalEliminada) return res.status(400).send({mensaje: 'No se puede eliminar el empleado'});
-        return res.status(200).send({empleado: sucursalEliminada});
+        if(!sucursalEliminada) return res.status(400).send({mensaje: 'No se puede eliminar la sucursal'});
+        return res.status(200).send({sucursales: sucursalEliminada});
 
     })
 }
