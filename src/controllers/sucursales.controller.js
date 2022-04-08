@@ -29,24 +29,24 @@ function agregarSucursal(req, res) {
         sucursalModel.nombreSucursal = parametros.nombreSucursal;
         sucursalModel.direccionSucursal = parametros.direccionSucursal;
         sucursalModel.idEmpresa = req.user.sub;
-    }else {
-        return res.status(500).send({ message: "error" })
-    }
 
-    Sucursales.find({ nombre: parametros.nombreSucursal, direccion:parametros.direccionSucursal, idEmpresa:req.user.sub},
+    Sucursales.find({ nombre: parametros.nombreSucursal/*, direccion:parametros.direccionSucursal, idEmpresa:req.user.sub*/},
         (err, sucursalGuardada) => {
-        if (sucursalGuardada.length==0) {
+        if (sucursalGuardada.length == 0) {
             sucursalModel.save((err, sucursalesGuardadas) => {
                 console.log(err)
                 if (err) return res.status(500).send({ message: "error en la peticion" });
                 if (!sucursalesGuardadas) return res.status(404).send({ message: "No se puede agregar una sucursal" });
                 return res.status(200).send({ sucursales: sucursalesGuardadas  });
-            });
+            })
             
         } else {
             return res.status(500).send({ message: 'sucursal existente' });
         }
-    })
+    })  
+        }else {
+            return res.status(500).send({ message: "Error en la peticion agregar" })
+        }
 }
 
 function editarSucursal(req,res){
@@ -64,7 +64,7 @@ function editarSucursal(req,res){
 function eliminarSucursal(req,res){
     var idSuc = req.params.idSucursal; 
 
-    Empleados.findOneAndDelete({_id:idSuc, idEmpresa:req.user.sub},
+    Sucursales.findOneAndDelete({_id:idSuc, idEmpresa:req.user.sub},
         (err,sucursalEliminada)=>{
         if(err) return res.status(500).send({mensaje: 'Error en la peticion'});
         if(!sucursalEliminada) return res.status(400).send({mensaje: 'No se puede eliminar la sucursal'});

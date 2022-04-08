@@ -12,7 +12,7 @@ api.get('/obtenerSucurales',[md_autentificacion.Auth,md_roles.verEmpresa],sucurs
 api.post('/agregarSucursal', [md_autentificacion.Auth,md_roles.verEmpresa], sucursalesController.agregarSucursal);
 api.put('/editarSucursal/:idSucursal',[md_autentificacion.Auth,md_roles.verEmpresa], sucursalesController.editarSucursal);
 api.delete('/eliminarSucursal/:idSucursal',[md_autentificacion.Auth,md_roles.verEmpresa], sucursalesController.eliminarSucursal);
-api.get('/ObtenerSucursalId/:idSucursal',[md_autentificacion.Auth, md_roles.verAdmin],sucursalesController.ObtenerSucursalId);
+api.get('/ObtenerSucursalId/:idSucursal',[md_autentificacion.Auth, md_roles.verEmpresa],sucursalesController.ObtenerSucursalId);
 
 
 
