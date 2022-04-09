@@ -28,25 +28,26 @@ function agregarSucursal(req, res) {
     if (parametros.nombreSucursal && parametros.direccionSucursal) {
         sucursalModel.nombreSucursal = parametros.nombreSucursal;
         sucursalModel.direccionSucursal = parametros.direccionSucursal;
-        sucursalModel.idEmpresa = req.user.sub;
+        sucursalModel.idEmpresa = req.user.sub; 
 
-    Sucursales.find({ nombre: parametros.nombreSucursal/*, direccion:parametros.direccionSucursal, idEmpresa:req.user.sub*/},
+    }else {
+        return res.status(500).send({ message: "error" })
+    }
+
+    Sucursales.find({ nombreSucursal: parametros.nombreSucursal,direccionSucursal:parametros.direccionSucursal,idEmpresa:req.user.sub},
         (err, sucursalGuardada) => {
-        if (sucursalGuardada.length == 0) {
-            sucursalModel.save((err, sucursalesGuardadas) => {
+        if (sucursalGuardada.length==0) {
+            sucursalModel.save((err, sucGuardada) => {
                 console.log(err)
                 if (err) return res.status(500).send({ message: "error en la peticion" });
-                if (!sucursalesGuardadas) return res.status(404).send({ message: "No se puede agregar una sucursal" });
-                return res.status(200).send({ sucursales: sucursalesGuardadas  });
-            })
+                if (!sucGuardada) return res.status(404).send({ message: "No se puede agregar una sucursal" });
+                return res.status(200).send({ sucursales: sucGuardada  });
+            });
             
         } else {
             return res.status(500).send({ message: 'sucursal existente' });
         }
-    })  
-        }else {
-            return res.status(500).send({ message: "Error en la peticion agregar" })
-        }
+    })
 }
 
 function editarSucursal(req,res){
