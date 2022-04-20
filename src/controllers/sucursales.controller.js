@@ -13,7 +13,7 @@ function ObtenerSucursales (req, res) {
 function ObtenerSucursalId(req, res){
     var idSucursal = req.params.idSucursal
 
-    Sucursales.findById(idSucursal,(err,sucursalEncontrada)=>{
+    Sucursales.findOne({_id:idSucursal,idEmpresa:req.user.sub},(err,sucursalEncontrada)=>{
         if (err) return res.status(500).send({ mensaje: 'Error en la peticion' });
         if (!sucursalEncontrada) return res.status(404).send( { mensaje: 'Error al obtener la Empresa' });
 

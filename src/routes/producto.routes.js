@@ -9,6 +9,7 @@ var api = express.Router();
 
 //LOGIN
 api.get('/obtenerProductos',[md_autentificacion.Auth, md_roles.verEmpresa],productosController.obtenerProductoEmpresa);
+api.get('/obtenerProductosId/:idProducto',[md_autentificacion.Auth, md_roles.verEmpresa],productosController.ObtenerProductoId)
 api.post('/agregarProducto', [md_autentificacion.Auth,md_roles.verEmpresa], productosController.agregarProductoEmpresa);
 api.put('/editarProducto/:idProducto',[md_autentificacion.Auth,md_roles.verEmpresa], productosController.editarProductoEmpresa);
 api.delete('/eliminarProducto/:idProducto',[md_autentificacion.Auth,md_roles.verEmpresa], productosController.eliminarProductoEmpresa);

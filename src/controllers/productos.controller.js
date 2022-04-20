@@ -11,6 +11,17 @@ function obtenerProductoEmpresa (req, res) {
     })
 }
 
+function ObtenerProductoId(req, res){
+    var idProducto = req.params.idProducto
+
+    Productos.findOne({_id:idProducto, idEmpresa: req.user.sub},(err,productoEncontrado)=>{
+        if (err) return res.status(500).send({ mensaje: 'Error en la peticion' });
+        if (!productoEncontrado) return res.status(404).send( { mensaje: 'Error al obtener la Empresa' });
+
+        return res.status(200).send({ productos: productoEncontrado });
+    })
+}
+
 function agregarProductoEmpresa(req, res) {
 var parametros = req.body;
 var productoModel = new Productos();
@@ -65,9 +76,11 @@ Productos.findOneAndDelete({_id:idProd, idEmpresa:req.user.sub},
 }
 
 
+
 module.exports = {
     obtenerProductoEmpresa,
     agregarProductoEmpresa,
     editarProductoEmpresa,
-    eliminarProductoEmpresa
+    eliminarProductoEmpresa,
+    ObtenerProductoId
 }
