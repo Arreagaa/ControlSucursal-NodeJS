@@ -30,10 +30,6 @@ function agregarSucursal(req, res) {
         sucursalModel.direccionSucursal = parametros.direccionSucursal;
         sucursalModel.idEmpresa = req.user.sub; 
 
-    }else {
-        return res.status(500).send({ message: "error" })
-    }
-
     Sucursales.find({ nombreSucursal: parametros.nombreSucursal,direccionSucursal:parametros.direccionSucursal,idEmpresa:req.user.sub},
         (err, sucursalGuardada) => {
         if (sucursalGuardada.length==0) {
@@ -42,12 +38,14 @@ function agregarSucursal(req, res) {
                 if (err) return res.status(500).send({ message: "error en la peticion" });
                 if (!sucGuardada) return res.status(404).send({ message: "No se puede agregar una sucursal" });
                 return res.status(200).send({ sucursales: sucGuardada  });
-            });
-            
+            })  
         } else {
             return res.status(500).send({ message: 'sucursal existente' });
         }
     })
+    }else {
+        return res.status(500).send({ message: "error" })
+    }
 }
 
 function editarSucursal(req,res){
