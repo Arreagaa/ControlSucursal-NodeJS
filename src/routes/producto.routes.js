@@ -14,6 +14,4 @@ api.post('/agregarProducto', [md_autentificacion.Auth,md_roles.verEmpresa], prod
 api.put('/editarProducto/:idProducto',[md_autentificacion.Auth,md_roles.verEmpresa], productosController.editarProductoEmpresa);
 api.delete('/eliminarProducto/:idProducto',[md_autentificacion.Auth,md_roles.verEmpresa], productosController.eliminarProductoEmpresa);
 
-
-
 module.exports = api;
