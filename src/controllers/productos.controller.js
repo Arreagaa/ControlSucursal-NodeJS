@@ -1,4 +1,5 @@
 const Productos = require('../models/productos.model');
+const Sucursales = require('../models/sucursales.model');
 const bcrypt = require('bcrypt-nodejs');
 const jwt = require('../services/jwt');
 
@@ -51,6 +52,7 @@ Productos.find({ nombre: parametros.nombreProducto, nombreProveedor:parametros.n
 })
 }
 
+
 function editarProductoEmpresa(req,res){
 var idProd = req.params.idProducto;
 var paramentros = req.body; 
@@ -82,5 +84,5 @@ module.exports = {
     agregarProductoEmpresa,
     editarProductoEmpresa,
     eliminarProductoEmpresa,
-    ObtenerProductoId
+    ObtenerProductoId,
 }

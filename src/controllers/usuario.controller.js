@@ -3,7 +3,9 @@ const bcrypt = require('bcrypt-nodejs');
 const jwt = require('../services/jwt');
 
 function ObtenerEmpresas (req, res) {
+
     Usuarios.find((err, empresasObtenidas) => {
+        
         if (err) return res.send({ mensaje: "Error: " + err })
 
         return res.send({ usuarios: empresasObtenidas })
