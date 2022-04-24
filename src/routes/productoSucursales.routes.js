@@ -10,7 +10,7 @@ var api = express.Router();
 //LOGIN
 //api.get('/obtenerProductos',[md_autentificacion.Auth, md_roles.verEmpresa],productosController.obtenerProductoEmpresa);
 //api.get('/obtenerProductosSucursal/:nombreSucursal',[md_autentificacion.Auth, md_roles.verEmpresa],productosController.obtenerProductosSucursales);
-api.get('/buscarProductoSucursal/:nombreSucursal', [md_autentificacion.Auth, md_roles.verEmpresa],productosController.obtenerProductosSucursales);
+api.get('/buscarProductoSucursal/:idSucursal', [md_autentificacion.Auth, md_roles.verEmpresa],productosController.obtenerProductosSucursales);
 api.post('/enviarProducto', [md_autentificacion.Auth,md_roles.verEmpresa], productosController.enviarProductoSucursales);
 //api.put('/editarProducto/:idProducto',[md_autentificacion.Auth,md_roles.verEmpresa], productosController.editarProductoEmpresa);
 //api.delete('/eliminarProducto/:idProducto',[md_autentificacion.Auth,md_roles.verEmpresa], productosController.eliminarProductoEmpresa);

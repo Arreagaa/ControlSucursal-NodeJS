@@ -2,12 +2,21 @@ const Sucursales = require('../models/sucursales.model');
 const jwt = require('../services/jwt');
 
 function ObtenerSucursales (req, res) {
-
+    idEmpresas = req.params.idSucursal
+    if(req.user.rol == 'ROL_ADMINISTRADOR'){
+        Sucursales.find({idEmpresa: idEmpresas},(err, sucursalesObtenidas) =>{
+            if(err) return res.send({mensaje:"Error: "+err})
+            return res.send({sucursales: sucursalesObtenidas})
+        })
+        
+    }else{
         Sucursales.find({idEmpresa: req.user.sub},(err, sucursalesObtenidas) =>{
             if(err) return res.send({mensaje:"Error: "+err})
        
             return res.send({sucursales: sucursalesObtenidas})
         })
+    }
+        
 }
 
 function ObtenerSucursalId(req, res){

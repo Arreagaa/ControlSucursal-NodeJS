@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt-nodejs');
 const jwt = require('../services/jwt');
 
 
-function obtenerProductosSucursales(req, res){
+/*function obtenerProductosSucursales(req, res){
     var nombreSuc = req.params.nombreSucursal;
 
         Sucursales.findOne({nombreSucursal: {$regex:nombreSuc,$options:'i'}},(err, sucursalEncontrado)=>{
@@ -19,6 +19,18 @@ function obtenerProductosSucursales(req, res){
                 return res.status(200).send({productosSucursal : sucursalProductos});
             }).populate('_id')
         })
+
+}*/
+
+function obtenerProductosSucursales(req, res){
+    var idSucursal = req.params.idSucursal;
+
+            ProductoSucursal.find({idSucursal: idSucursal}, (err, sucursalProductos)=>{
+                if(err) return res.status(500).send({ mensaje: "Error en la peticion"});
+                if(!sucursalProductos) return res.status(404).send({mensaje : "Error, no se encuentran productos en dicha sucursal"});
+
+                return res.status(200).send({productosSucursal : sucursalProductos});
+            }).populate('idSucursal')
 
 }
 
@@ -61,7 +73,7 @@ function enviarProductoSucursales(req, res) {
 
                             if (err) return res.status(500).send({ message: 'No se puede editar el producto de empresa' });
                             if (!productoEmpresaEditado) return res.status(404).send({ message: 'No existen productos a editar en la empresa' });
-                            ProductoSucursal.save(
+                            ProductosSucursalModelo.save(
                                 (err, ProductoGuardado) => {
 
                                 if (err) return res.status(500).send({ message: 'Error en la peticion' });
