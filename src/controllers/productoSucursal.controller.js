@@ -4,24 +4,6 @@ const Productos = require('../models/productos.model');
 const bcrypt = require('bcrypt-nodejs');
 const jwt = require('../services/jwt');
 
-
-/*function obtenerProductosSucursales(req, res){
-    var nombreSuc = req.params.nombreSucursal;
-
-        Sucursales.findOne({nombreSucursal: {$regex:nombreSuc,$options:'i'}},(err, sucursalEncontrado)=>{
-            if(err) return res.status(500).send({ mensaje: "Error en la peticion"});
-            if(!sucursalEncontrado) return res.status(404).send({mensaje : "Error, no se encuentran sucursales con ese nombre"});
-
-            ProductoSucursal.find({_idSucursal: sucursalEncontrado._id}, (err, sucursalProductos)=>{
-                if(err) return res.status(500).send({ mensaje: "Error en la peticion"});
-                if(!sucursalProductos) return res.status(404).send({mensaje : "Error, no se encuentran productos en dicha sucursal"});
-
-                return res.status(200).send({productosSucursal : sucursalProductos});
-            }).populate('_id')
-        })
-
-}*/
-
 function obtenerProductosSucursales(req, res){
     var idSucursal = req.params.idSucursal;
 
