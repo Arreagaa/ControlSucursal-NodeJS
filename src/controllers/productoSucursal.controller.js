@@ -16,6 +16,35 @@ function obtenerProductosSucursales(req, res){
 
 }
 
+//OBTNER POR NOMBRE
+function ObtenerProductoSucursalNombre(req, res){
+    var nombreProductoSucursal = req.params.nombreProductoSucursal;
+
+        ProductoSucursal.find({nombreProductoSucursal: {$regex:nombreProductoSucursal,$options:'i'}}, (err, sucursalProductos) =>{
+            if(err) return res.status(500).send({ mensaje: "Error en la peticion"});
+            if(!sucursalProductos) return res.status(404).send({mensaje : "Error, no se encuentran productos con ese nombre"});
+            return res.status(200).send({productosSucursal : sucursalProductos});
+        })
+}
+
+//OBTNER POR STOCK MAYOR A MENOR
+function ObtenerProductoSucursalStock(req, res){
+    ProductoSucursal.find().sort({stockSucursal : -1 }).exec((err, productoEncontrado) => {
+        if(err) return res.status(500).send({ mensaje: "Error en la peticion"});
+            if(!productoEncontrado) return res.status(404).send({mensaje : "Error, no se encuentran productos con ese nombre"});
+            return res.status(200).send({productosSucursal : productoEncontrado});
+    })
+}
+
+//OBTNER POR STOCK MENOR A MAYOR
+function ObtenerProductoSucursalStockMenor(req, res){
+    ProductoSucursal.find().sort({stockSucursal : +1 }).exec((err, productoEncontrado) => {
+        if(err) return res.status(500).send({ mensaje: "Error en la peticion"});
+            if(!productoEncontrado) return res.status(404).send({mensaje : "Error, no se encuentran productos con ese nombre"});
+            return res.status(200).send({productosSucursal : productoEncontrado});
+    })
+}
+
 function enviarProductoSucursales(req, res) {
     var parametros = req.body;
 
@@ -99,5 +128,8 @@ function enviarProductoSucursales(req, res) {
 
 module.exports ={
     obtenerProductosSucursales,
-    enviarProductoSucursales
+    enviarProductoSucursales,
+    ObtenerProductoSucursalNombre,
+    ObtenerProductoSucursalStock,
+    ObtenerProductoSucursalStockMenor
 }

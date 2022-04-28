@@ -16,4 +16,8 @@ api.post('/enviarProducto', [md_autentificacion.Auth,md_roles.verEmpresa], produ
 //api.delete('/eliminarProducto/:idProducto',[md_autentificacion.Auth,md_roles.verEmpresa], productosController.eliminarProductoEmpresa);
 //api.put('/enviarProducto/:idProducto', [md_autentificacion.Auth,md_roles.verEmpresa], productosController.enviarProductosSucursal);
 
+api.get('/buscarNombreProductoSucursal/:nombreProductoSucursal',[md_autentificacion.Auth,md_roles.verEmpresa], productosController.ObtenerProductoSucursalNombre);
+api.get('/buscarStockProductoSucursal',[md_autentificacion.Auth,md_roles.verEmpresa], productosController.ObtenerProductoSucursalStock);
+api.get('/buscarStockProductoSucursalMenor',[md_autentificacion.Auth,md_roles.verEmpresa], productosController.ObtenerProductoSucursalStockMenor);
+
 module.exports = api;

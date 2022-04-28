@@ -23,6 +23,46 @@ function ObtenerProductoId(req, res){
     })
 }
 
+//OBTNER POR NOMBRE
+function ObtenerProductoNombre(req, res){
+    var nombreProducto = req.params.nombreProducto;
+
+        Productos.find({nombreProducto: {$regex:nombreProducto,$options:'i'}}, (err, productoEncontrado) =>{
+            if(err) return res.status(500).send({ mensaje: "Error en la peticion"});
+            if(!productoEncontrado) return res.status(404).send({mensaje : "Error, no se encuentran productos con ese nombre"});
+            return res.status(200).send({productos : productoEncontrado});
+        })
+}
+
+//OBTNER POR STOCK MAYOR A MENOR
+function ObtenerProductoStock(req, res){
+    Productos.find().sort({stock : -1 }).exec((err, productoEncontrado) => {
+        if(err) return res.status(500).send({ mensaje: "Error en la peticion"});
+            if(!productoEncontrado) return res.status(404).send({mensaje : "Error, no se encuentran productos con ese nombre"});
+            return res.status(200).send({productos : productoEncontrado});
+    })
+}
+
+//OBTNER POR STOCK MENOR A MAYOR
+function ObtenerProductoStockMenor(req, res){
+    Productos.find().sort({stock : +1 }).exec((err, productoEncontrado) => {
+        if(err) return res.status(500).send({ mensaje: "Error en la peticion"});
+            if(!productoEncontrado) return res.status(404).send({mensaje : "Error, no se encuentran productos con ese nombre"});
+            return res.status(200).send({productos : productoEncontrado});
+    })
+}
+
+//OBTNER POR NOMBRE PROVEEDOR
+function ObtenerProductoProveedor(req, res){
+    var nombreProveedor = req.params.nombreProveedor;
+
+        Productos.find({nombreProveedor: {$regex:nombreProveedor,$options:'i'}}, (err, productoEncontrado) =>{
+            if(err) return res.status(500).send({ mensaje: "Error en la peticion"});
+            if(!productoEncontrado) return res.status(404).send({mensaje : "Error, no se encuentran productos con ese proveedor"});
+            return res.status(200).send({productos : productoEncontrado});
+        })
+}
+
 function agregarProductoEmpresa(req, res) {
 var parametros = req.body;
 var productoModel = new Productos();
@@ -77,12 +117,14 @@ Productos.findOneAndDelete({_id:idProd, idEmpresa:req.user.sub},
 })
 }
 
-
-
 module.exports = {
     obtenerProductoEmpresa,
     agregarProductoEmpresa,
     editarProductoEmpresa,
     eliminarProductoEmpresa,
     ObtenerProductoId,
+    ObtenerProductoNombre,
+    ObtenerProductoStock,
+    ObtenerProductoProveedor,
+    ObtenerProductoStockMenor
 }
