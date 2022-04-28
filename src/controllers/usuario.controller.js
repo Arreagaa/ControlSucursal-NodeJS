@@ -111,7 +111,7 @@ function registrarUsuario(req, res){
         usuariosModel.email =  parametros.email;
         usuariosModel.password = parametros.password;
         usuariosModel.rol = 'ROL_USUARIO';
-    }
+    
             Usuarios.find({nombre: parametros.nombre, email: parametros.email, password: parametros.password, rol: parametros.rol}
                 ,(err, usuarioGuardado)=>{
                 if(usuarioGuardado.length == 0){
@@ -128,7 +128,9 @@ function registrarUsuario(req, res){
                     return res.status(500).send({ mensaje: 'Error en la peticion' });
                 }
             })
-        
+    }else{
+        return res.status(500).send({ mensaje: 'Error en la peticion agregar' });
+    }
 }
 
 function editarEmpresa(req, res){
