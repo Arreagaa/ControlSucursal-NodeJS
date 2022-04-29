@@ -59,8 +59,6 @@ function enviarProductoSucursales(req, res) {
             ProductoSucursal.findOne({ nombreProductoSucursal: parametros.nombreProductoSucursal, idSucursal: sucursalEncontrada._id }, 
                 (err, productoEncontradoSucursal) => {
 
-                var actualizarStock = (parametros.stockSucursal * -1)
-
                 if (err) return res.status(404).send({ message: 'Datos incorrectos' })
                 if (productoEncontradoSucursal == null) {
 
@@ -68,7 +66,7 @@ function enviarProductoSucursales(req, res) {
                         (err, productoEmpresaStock) => {
 
                         if (err) return res.status(400).send({ message: 'Sucursal inexistente. Nombre incorrecto' });                     
-                        if (parametros.stockSucursal > productoEmpresaStock.stock) {
+                        if (parametros.stockSucursal > parametros.stock) {
                         return res.status(500).send({ message: 'La cantidad sobrepasa el stock. Stock del Producto: ' + productoEmpresaStock.stock });}
 
                         var ProductosSucursalModelo = new ProductoSucursal();
@@ -126,10 +124,54 @@ function enviarProductoSucursales(req, res) {
     }
 }
 
+
+function ventaSucursal (req, res){
+
+    var parametros = req.body;
+    var idSuc = req.params.idSucursal;
+
+    Sucursales.findOne({_id: idSuc, idEmpresa: req.user.sub},(err, sucursalEncontrada)=>{
+        if(err||sucursalEncontrada == null) return res.status(400).send({mensaje: 'Sucursal inexistente'})
+
+        if (parametros.cantidadVendida <= 0) return res.status(500).send({mensaje: 'la cantidad no puede ser menor a 0'})
+
+        if (parametros.cantidadVendida && parametros.cantidadVendida != ""&&parametros.nombreProductoSucursal && parametros.nombreProductoSucursal != ""){
+
+            ProductoSucursal.findOne({nombreProductoSucursal: parametros.nombreProductoSucursal, idSucursal: sucursalEncontrada._id},(err, productoEncontradoSucursal)=>{
+
+                if(err||!productoEncontradoSucursal) return res.status(404).send({mensaje: 'El producto no existe en la sucursal'})
+
+                if(parametros.cantidadVendida <= 0) return res.status(500).send({mensaje:'la cantidad no puede ser menor a 0'})
+                if (productoEncontradoSucursal.stockSucursal == 0) return res.status(500).send({mensaje: 'Producto Agotado'})
+
+                if(parametros.cantidadVendida > productoEncontradoSucursal.stockSucursal){
+                    return res.status(500).send({mensaje:'Cantidad mayor al stock, el stock es: '+productoEncontradoSucursal.stockSucursal})
+                }
+
+                var restarStockSucursal = (parametros.cantidadVendida * -1)
+
+                ProductoSucursal.findOneAndUpdate({_id: productoEncontradoSucursal._id}, {$inc: {StockSucursal: restarStockSucursal, cantidadVendida: parametros.cantidadVendida}},{new: true},(err, productoEditado)=>{
+                    console.log(err)
+                    if(err) return res.status(500).send({ message: "error en la peticion" })
+                    if (!productoEditado) return res.status(404).send({mensaje: 'no se encuentran productos'})
+                    return res.status(200).send({productosSucursal: productoEditado})
+                })
+
+            })
+        }else{
+            return res.status(500).send({mensaje: 'datos incorrectos'})
+        }
+
+    })
+}
+
+
+
 module.exports ={
     obtenerProductosSucursales,
     enviarProductoSucursales,
     ObtenerProductoSucursalNombre,
     ObtenerProductoSucursalStock,
-    ObtenerProductoSucursalStockMenor
+    ObtenerProductoSucursalStockMenor,
+    ventaSucursal
 }
