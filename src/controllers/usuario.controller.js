@@ -106,11 +106,12 @@ function registrarUsuario(req, res){
     var parametros = req.body;
     var usuariosModel = new Usuarios();
   
-    if(parametros.nombre, parametros.email, parametros.password){
+    if(parametros.nombre, parametros.email, parametros.password, parametros.tipo){
         usuariosModel.nombre = parametros.nombre;
         usuariosModel.email =  parametros.email;
         usuariosModel.password = parametros.password;
-        usuariosModel.rol = 'ROL_USUARIO';
+        usuariosModel.tipo = parametros.tipo;
+        usuariosModel.rol = 'ROL_EMPRESA';
     
             Usuarios.find({nombre: parametros.nombre, email: parametros.email, password: parametros.password, rol: parametros.rol}
                 ,(err, usuarioGuardado)=>{
