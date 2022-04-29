@@ -122,13 +122,16 @@ function ventaSucursal (req, res){
     var parametros = req.body;
 
     Sucursales.findOne({_id: idSucursal, idEmpresa: req.user.sub},(err, sucursalEncontrada)=>{
-        if(err||sucursalEncontrada == null) return res.status(400).send({mensaje: 'Dicha Sucursal es inexistente'})
+
+        if (err) return res.status(400).send({ message: 'Dicha Sucursal es inexistente'});
+        if (!sucursalEncontrada) return res.status(400).send({ message: 'Sucursal no existe en tu empresa' })
         if (parametros.nombreProductoSucursal, parametros.nombreProductoSucursal != "", parametros.cantidadVendida, parametros.cantidadVendida != ""){
 
             ProductoSucursal.findOne({nombreProductoSucursal: parametros.nombreProductoSucursal, idSucursal: sucursalEncontrada._id},
                 (err, productoEncontradoSucursal)=>{
-                    if(err||!productoEncontradoSucursal) return res.status(404).send({mensaje: 'El producto no se encuentra sucursal'})
-                    if (productoEncontradoSucursal.stockSucursal == 0) return res.status(500).send({mensaje: 'Producto Agotado actualmente'})
+                    if (err) return res.status(400).send({ message: 'El producto no se encuentra sucursal'});
+                    if (!productoEncontradoSucursal) return res.status(400).send({ message: 'El producto no se encuentra sucursal'})
+                    if(productoEncontradoSucursal.stockSucursal == 0) return res.status(500).send({mensaje: 'Producto Agotado actualmente'})
                     if(parametros.cantidadVendida > productoEncontradoSucursal.stockSucursal){
                     return res.status(500).send({mensaje:'Cantidad mayor al stock'})
                 }
