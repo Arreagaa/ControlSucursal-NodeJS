@@ -14,5 +14,6 @@ api.put('/venta/:idSucursal',[md_autentificacion.Auth,md_roles.verEmpresa], prod
 api.get('/buscarNombreProductoSucursal/:nombreProductoSucursal',[md_autentificacion.Auth,md_roles.verEmpresa], productosController.ObtenerProductoSucursalNombre);
 api.get('/buscarStockProductoSucursal',[md_autentificacion.Auth,md_roles.verEmpresa], productosController.ObtenerProductoSucursalStock);
 api.get('/buscarStockProductoSucursalMenor',[md_autentificacion.Auth,md_roles.verEmpresa], productosController.ObtenerProductoSucursalStockMenor);
+api.get('/obtenerProductosSucursalId/:idProducto',[md_autentificacion.Auth, md_roles.verEmpresa],productosController.ObtenerProductoSucursalId)
 
 module.exports = api;

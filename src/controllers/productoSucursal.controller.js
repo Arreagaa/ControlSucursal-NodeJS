@@ -16,6 +16,18 @@ function obtenerProductosSucursales(req, res){
 
 }
 
+//OBTENER POR ID 
+function ObtenerProductoSucursalId(req, res){
+    var idProducto = req.params.idProducto
+
+    ProductoSucursal.findOne({_id:idProducto, idEmpresa: req.user.sub},(err,productoEncontrado)=>{
+        if (err) return res.status(500).send({ mensaje: 'Error en la peticion' });
+        if (!productoEncontrado) return res.status(404).send( { mensaje: 'Error al obtener la Empresa' });
+
+        return res.status(200).send({ productosSucursal: productoEncontrado });
+    })
+}
+
 //OBTNER POR NOMBRE
 function ObtenerProductoSucursalNombre(req, res){
     var nombreProductoSucursal = req.params.nombreProductoSucursal;
@@ -154,6 +166,7 @@ function ventaSucursal (req, res){
 
 module.exports ={
     obtenerProductosSucursales,
+    ObtenerProductoSucursalId,
     enviarProductoSucursales,
     ObtenerProductoSucursalNombre,
     ObtenerProductoSucursalStock,
