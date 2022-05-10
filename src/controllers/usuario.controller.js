@@ -2,6 +2,8 @@ const Usuarios = require('../models/usuario.model');
 const bcrypt = require('bcrypt-nodejs');
 const jwt = require('../services/jwt');
 
+
+// BUSQUEDAS
 function ObtenerEmpresas (req, res) {
 
     Usuarios.find((err, empresasObtenidas) => {
@@ -75,13 +77,13 @@ function registrarEmpresa(req, res){
     var parametros = req.body;
     var usuariosModel = new Usuarios();
   
-    if(parametros.nombre, parametros.email, parametros.tipo){
+    if(parametros.nombre, parametros.email, parametros.tipo, parametros.municipio){
         usuariosModel.nombre = parametros.nombre;
         usuariosModel.email =  parametros.email;
-        //usuariosModel.password = parametros.password;
         usuariosModel.tipo = parametros.tipo;
+        usuariosModel.municipio = parametros.municipio;
         usuariosModel.rol = 'ROL_EMPRESA';
-            Usuarios.find({nombre: parametros.nombre/*, email: parametros.email, password: parametros.password, tipo: parametros.tipo ,rol: parametros.rol*/}
+            Usuarios.find({nombre: parametros.nombre}
                 ,(err, empresaGuardada)=>{
                 if(empresaGuardada.length == 0){
                     bcrypt.hash(parametros.password, null,null, (err, passwordEncriptada)=>{
@@ -106,21 +108,20 @@ function registrarUsuario(req, res){
     var parametros = req.body;
     var usuariosModel = new Usuarios();
   
-    if(parametros.nombre, parametros.email, parametros.password, parametros.tipo){
+    if(parametros.nombre, parametros.email, parametros.tipo, parametros.municipio){
         usuariosModel.nombre = parametros.nombre;
         usuariosModel.email =  parametros.email;
-        usuariosModel.password = parametros.password;
         usuariosModel.tipo = parametros.tipo;
+        usuariosModel.municipio = parametros.municipio;
         usuariosModel.rol = 'ROL_EMPRESA';
-    
-            Usuarios.find({nombre: parametros.nombre, email: parametros.email, password: parametros.password, rol: parametros.rol}
+            Usuarios.find({nombre: parametros.nombre}
                 ,(err, usuarioGuardado)=>{
                 if(usuarioGuardado.length == 0){
                     bcrypt.hash(parametros.password, null,null, (err, passwordEncriptada)=>{
                         usuariosModel.password = passwordEncriptada;
                         usuariosModel.save((err, usGuardado) => {
                             if(err) return res.status(500).send({mensaje: 'No se realizo la accion'});
-                            if(!usGuardado) return res.status(404).send({mensaje: 'No se agrego el usuario'});
+                            if(!usGuardado) return res.status(404).send({mensaje: 'No se agrego la empresa'});
   
                             return res.status(201).send({usuarios: usGuardado});
                          })
